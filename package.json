@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-julia",
+  "name": "wmik",
   "private": true,
-  "description": "A minimal blog template built with Gatsby",
-  "version": "0.1.0",
-  "author": "Niklas Metje <hi@niklasmtj.de>",
+  "description": "A personal website and minimal blog built with Gatsby",
+  "version": "1.0.0",
+  "author": "wmik <contact@wmik.me>",
   "dependencies": {
     "@emotion/core": "^10.0.10",
     "@emotion/styled": "^10.0.11",
@@ -32,7 +32,9 @@
     "prettier": "^1.17.1"
   },
   "keywords": [
-    "gatsby"
+    "personal",
+    "blog",
+    "website"
   ],
   "license": "MIT",
   "scripts": {
@@ -45,9 +47,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/wmik/site"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/wmik/site"
   }
 }

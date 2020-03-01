@@ -1,14 +1,9 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
 <h1 align="center">
-  Gatsby Starter Julia
+  i
 </h1>
 
-[GatsbyJS](https://www.gatsbyjs.org/) is a free and open source static website builder build on React. It's one implementation of the [JAMstack](https://jamstack.org/) idea which creates high speed webpages.
+> Built on [JAMstack](https://jamstack.org/) using [GatsbyJS](https://www.gatsbyjs.org/).
 
 ## 📚 Features:
 
@@ -30,18 +25,23 @@
 Create new pages like an About page in the `/pages` directory.
 The minimum code is:
 
-```js
+```jsx
 import React from "react"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const PageName = () => (
-  <Layout>
-    <SEO title="PageName" keywords={[`gatsby`, `application`, `react`]} />
-    //CONTENT HERE
-  </Layout>
-)
+function PageName () {
+  let title = 'Page title'
+  let keywords = ['page', 'keyword'];
+
+  return (
+    <Layout>
+      <SEO title={title} keywords={keywords} />
+      {/* Add more content here */}
+    </Layout>
+  );
+}
 
 export default PageName
 ```
@@ -50,39 +50,22 @@ To change the name on the landing page please modify the `title` in `gatsby-conf
 
 The Nunito typeface is included as a npm module in `gatsby-browser.js` and in `/components/layout.css`
 
----
-
-This Gatsby starter is built on top of the official [gatsby-starter-default](https://github.com/gatsbyjs/gatsby-starter-default). You can find a quick start guide in the following lines. There are the most important files explained.
-
 ## 🚀 Quick start
 
-This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+1. Install project dependencies
 
-1.  **Create a Gatsby site.**
+        npm run install
 
-    Use the Gatsby CLI to create a new site, specifying the julia starter.
+1. Launch the app
+        
+        npm run start
 
-    ```sh
-    # create a new Gatsby site using the julia starter
-    gatsby new julia-starter https://github.com/niklasmtj/gatsby-starter-julia
-    ```
-
-1.  **Start developing.**
-
-    Navigate into your new site’s directory and start it up.
-
-    ```sh
-    cd julia-starter/
-    gatsby develop
-    ```
-
-1.  **Open the source code and start editing!**
 
     Your site is now running at `http://localhost:8000`!
 
     _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
 
-    Open the `julia-starter` directory in your code editor of choice and edit `src/pages/index.js` or `src/pages/blog.js`. Save your changes and the browser will update in real time!
+    Edit and save files within the project directory in your code editor and the browser will update in real time!
 
 ## 🧐 What's inside?
 
@@ -97,10 +80,10 @@ A quick look at the top-level files and directories you'll see in a Gatsby proje
     ├── gatsby-config.js
     ├── gatsby-node.js
     ├── gatsby-ssr.js
-    ├── LICENSE
+    ├── license
     ├── package-lock.json
     ├── package.json
-    └── README.md
+    └── readme.md
 
 1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
 
@@ -118,13 +101,13 @@ A quick look at the top-level files and directories you'll see in a Gatsby proje
 
 8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+9.  **`license`**: This contains copyright information.
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(Don’t edit this file directly).**
 
 11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+12. **`readme.md`**: A text file containing useful reference information about your project.
 
 ### The src directory
 
@@ -157,6 +140,6 @@ Looking for more guidance? The perfect place to learn more about GatsbyJS is the
 
 You can also directly deploy this starter via Netlify.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/niklasmtj/gatsby-starter-julia)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/wmik/site)
 
 <!-- AUTO-GENERATED-CONTENT:END -->
