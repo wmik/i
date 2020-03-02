@@ -1,14 +1,19 @@
-import React from "react"
+import React from 'react';
 
-import LandingBio from "../components/landing-bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import LandingBio from '../components/landing-bio';
+import Layout from '../components/layout';
+import SEO from '../components/seo';
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <LandingBio />
-  </Layout>
-)
+function IndexPage() {
+  let title = 'Home';
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
 
-export default IndexPage
+  return (
+    <Layout>
+      <SEO title={title} keywords={keywords} />
+      <LandingBio />
+    </Layout>
+  );
+}
+
+export default IndexPage;
