@@ -1,67 +1,79 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+const path = require('path');
+const { createFilePath } = require('gatsby-source-filesystem');
 
-// You can delete this file if you're not using it
+function onCreateNode({ node, getNode, actions }) {
+  if (node.internal.type === 'MarkdownRemark') {
+    let slug = createFilePath({ node, getNode, basePath: 'pages' });
 
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
-
-// You can delete this file if you're not using it
-
-const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
-
-exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
-  if (node.internal.type === `MarkdownRemark`) {
-    const slug = createFilePath({ node, getNode, basePath: `pages` })
-    createNodeField({
+    actions.createNodeField({
       node,
-      name: `slug`,
+      name: 'slug',
       value: slug,
-    })
+    });
   }
 }
 
-exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
-  const blogPostTemplate = path.resolve(`src/templates/blog-post.js`)
-  return graphql(`
-    {
-      allMarkdownRemark {
-        edges {
-          node {
-            frontmatter {
-              path
-              draft
-              date
-            }
-            fields {
-              slug
-            }
+const QUERY_MARKDOWN = `
+  {
+    postsRemark: allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            path
+            draft
+            date
+          }
+          fields {
+            slug
           }
         }
       }
     }
-  `).then(result => {
-    if (result.errors) {
-      return Promise.reject(result.errors)
+    tagsGroup: allMarkdownRemark {
+      group(field: frontmatter___tags) {
+        fieldValue
+      }
     }
-    result.data.allMarkdownRemark.edges
-      .filter(({ node }) => !node.frontmatter.draft)
-      .forEach(({ node }) => {
-        createPage({
-          path: node.frontmatter.path,
-          component: blogPostTemplate,
-          slug: node.fields.slug,
-          context: {},
-        })
-      })
-  })
+  }
+`;
+
+async function createPages({ graphql, actions }) {
+  let result = await graphql(QUERY_MARKDOWN);
+
+  if (result.errors) {
+    return Promise.reject(result.errors);
+  }
+
+  let blogPostTemplate = path.resolve('src/templates/blog-post.js');
+
+  let posts = result.data.postsRemark.edges.filter(
+    ({ node }) => !node.frontmatter.draft
+  );
+
+  posts.forEach(({ node }) =>
+    actions.createPage({
+      path: node.frontmatter.path,
+      component: blogPostTemplate,
+      slug: node.fields.slug,
+      context: {},
+    })
+  );
+
+  let tagTemplate = path.resolve('src/templates/tags.js');
+  let tags = result.data.tagsGroup.group;
+
+  tags.forEach(tag =>
+    actions.createPage({
+      path: `tags/${tag.fieldValue}/`,
+      component: tagTemplate,
+      context: {
+        tag: tag.fieldValue,
+      },
+    })
+  );
 }
+
+module.exports = {
+  onCreateNode,
+  createPages,
+};

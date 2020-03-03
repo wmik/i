@@ -49,7 +49,32 @@ const MarkdownContent = styled.div`
       background-size: 100% 88%;
     }
   }
-`
+`;
+
+const TagList = styled.ul`
+  list-style-type: none;
+  display: flex;
+  padding-top: 3rem;
+  margin: 0;
+`;
+
+const Tag = styled.li`
+  ${markStyle}
+  margin-right: 0.5rem;
+  > a {
+    text-decoration: none;
+  }
+`;
+
+export default function BlogPost({ data }) {
+  let post = data.markdownRemark;
+  let { title, date, description, tags } = post.frontmatter;
+
+  let tagComponentList = tags.map(tag => (
+    <Tag key={tag}>
+      <a href={`/tags/${tag}`}>{tag}</a>
+    </Tag>
+  ));
 
   return (
     <Layout>
@@ -60,6 +85,7 @@ const MarkdownContent = styled.div`
           {date} - {post.fields.readingTime.text}
         </HeaderDate>
         <MarkdownContent dangerouslySetInnerHTML={{ __html: post.html }} />
+        <TagList>{tagComponentList}</TagList>
       </Content>
     </Layout>
   );
@@ -74,6 +100,7 @@ export const pageQuery = graphql`
         date(formatString: "DD MMMM, YYYY")
         path
         title
+        tags
       }
       fields {
         readingTime {
