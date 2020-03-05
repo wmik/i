@@ -1,5 +1,5 @@
 ---
-title: "Personal coding style guide"
+title: "Personal coding style guide 💄"
 tags: ["coding", "style", "syntax"]
 date: "2020-03-05"
 draft: false
