@@ -2,3 +2,5 @@
 from = "/audio"
 to = "https://wmik.s3.amazonaws.com"
 status = 200
+force = true
+headers = {X-From: "Netlify"}
