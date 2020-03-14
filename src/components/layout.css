@@ -41,7 +41,6 @@ template {
 }
 a {
   font-style: normal;
-  color: hsla(0, 0%, 0%, 0.8);
   -webkit-text-decoration-skip: objects;
 }
 a:active,
@@ -414,16 +413,6 @@ table {
 fieldset {
   margin-left: 0;
   margin-right: 0;
-  margin-top: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0;
-  margin-bottom: 1.45rem;
-}
-blockquote {
-  margin-left: 1.45rem;
-  margin-right: 1.45rem;
   margin-top: 0;
   padding-bottom: 0;
   padding-left: 0;
