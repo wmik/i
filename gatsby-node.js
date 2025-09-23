@@ -22,6 +22,27 @@ const QUERY_MARKDOWN = `
             path
             draft
             date
+            demo
+          }
+          fields {
+            slug
+          }
+        }
+      }
+    }
+    projectsRemark: allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            path
+            draft
+            date
+            demo
+            duration
+            budget
+            url
+            featuredImageUrl
+            featuredImageAlt
           }
           fields {
             slug
@@ -47,7 +68,7 @@ async function createPages({ graphql, actions }) {
   let blogPostTemplate = path.resolve('src/templates/blog-post.js');
 
   let posts = result.data.postsRemark.edges.filter(
-    ({ node }) => !node.frontmatter.draft
+    ({ node }) => !node.frontmatter.draft && !node.frontmatter.demo
   );
 
   posts.forEach(({ node }) =>
@@ -56,6 +77,23 @@ async function createPages({ graphql, actions }) {
       component: blogPostTemplate,
       slug: node.fields.slug,
       context: {},
+    })
+  );
+  
+  let projectDemoTemplate = path.resolve('src/templates/project-demo.js');
+
+  let projects = result.data.projectsRemark.edges.filter(
+    ({ node }) => !node.frontmatter.draft && node.frontmatter.demo
+  );
+
+  projects.forEach(({ node }) =>
+    actions.createPage({
+      path: node.frontmatter.path,
+      component: projectDemoTemplate,
+      slug: node.fields.slug,
+      context: {
+        featuredImageUrl: node.frontmatter.featuredImageUrl
+      },
     })
   );
 

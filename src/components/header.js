@@ -23,12 +23,12 @@ function Header() {
   return (
     <SiteHeader>
       <Content style={{ display: 'flex', alignItems: 'center' }}>
+        <ExternalLink href="/projects">Projects</ExternalLink>
         <NavLink to="/blog">Blog</NavLink>
         <ExternalLink href="mailto:contact@wmik.me">Contact</ExternalLink>
         <ExternalLink href="https://linkedin.com/in/williemik">
           LinkedIn
         </ExternalLink>
-        <ExternalLink href="https://github.com/wmik">Projects</ExternalLink>
         <Sfx.Provider>
           <DarkModeToggle style={{ marginLeft: 24 }} />
           <SoundToggle />
