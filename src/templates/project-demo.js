@@ -1,10 +1,10 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Img from 'gatsby-image';
-import { css } from '@emotion/core';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -80,9 +80,9 @@ const Tag = styled.li`
   }
 `;
 
-export default function ProjectDemo({ data }) {
+export default function ProjectDemoPage({ data }) {
   let project = data.markdownRemark;
-  let { title, description, tags, url, featuredImageAlt } = project.frontmatter;
+  let { title, tags, url, featuredImageAlt } = project.frontmatter;
   let image = data.file;
 
   let tagComponentList = tags.map(tag => (
@@ -93,11 +93,10 @@ export default function ProjectDemo({ data }) {
 
   return (
     <Layout>
-      <SEO title={title} description={description || project.excerpt} />
       <Content>
         {image ? (
-          <Img
-            fluid={image.childImageSharp.fluid}
+          <GatsbyImage
+            image={getImage(image.childImageSharp.gatsbyImageData)}
             style={{ borderRadius: 8, marginBottom: 16 }}
             alt={featuredImageAlt}
           />
@@ -113,8 +112,23 @@ export default function ProjectDemo({ data }) {
   );
 }
 
-export const pageQuery = graphql`
-  query($path: String!, $featuredImageUrl: String!) {
+export function Head({ data, location }) {
+  let project = data.markdownRemark;
+  let { title, description, tags } = project.frontmatter;
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
+
+  return (
+    <CustomHead
+      description={description || project.excerpt}
+      title={title}
+      keywords={tags ?? keywords}
+      pathname={location.pathname}
+    />
+  );
+}
+
+export const query = graphql`
+  query ($path: String!, $featuredImageUrl: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       excerpt(pruneLength: 160)
@@ -135,9 +149,7 @@ export const pageQuery = graphql`
     file(relativePath: { eq: $featuredImageUrl }) {
       relativePath
       childImageSharp {
-        fluid {
-          ...GatsbyImageSharpFluid
-        }
+        gatsbyImageData
       }
     }
   }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -54,8 +54,7 @@ function BlogPostPreview({ node }) {
   );
 }
 
-function IndexPage({ data }) {
-  let title = 'Blog';
+export default function BlogPage({ data }) {
   let posts = data.allMarkdownRemark.edges.filter(publishedBeforeToday);
   let previewList = posts.map(({ node }) => (
     <BlogPostPreview node={node} key={node.id} />
@@ -63,7 +62,6 @@ function IndexPage({ data }) {
 
   return (
     <Layout>
-      <SEO title={title} />
       <Content>
         <h1>Blog</h1>
         {previewList}
@@ -72,10 +70,13 @@ function IndexPage({ data }) {
   );
 }
 
-function publishedBeforeToday({ node }) {
-  let { rawDate } = node.frontmatter;
-  let publishDate = new Date(rawDate);
-  return publishDate < new Date();
+export function Head() {
+  let title = 'Blog';
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
+
+  return (
+    <CustomHead title={title} keywords={keywords} />
+  );
 }
 
 export const query = graphql`
@@ -86,8 +87,8 @@ export const query = graphql`
       }
     }
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { draft: { eq: false } } }
+      sort: { frontmatter: { date: DESC } }
+      filter: { frontmatter: { draft: { eq: false }, demo: { eq: null } } }
     ) {
       totalCount
       edges {
@@ -112,4 +113,8 @@ export const query = graphql`
   }
 `;
 
-export default IndexPage;
+function publishedBeforeToday({ node }) {
+  let { rawDate } = node.frontmatter;
+  let publishDate = new Date(rawDate);
+  return publishDate < new Date();
+}

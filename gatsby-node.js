@@ -8,7 +8,7 @@ function onCreateNode({ node, getNode, actions }) {
     actions.createNodeField({
       node,
       name: 'slug',
-      value: slug,
+      value: slug
     });
   }
 }
@@ -51,7 +51,7 @@ const QUERY_MARKDOWN = `
       }
     }
     tagsGroup: allMarkdownRemark {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
       }
     }
@@ -76,10 +76,10 @@ async function createPages({ graphql, actions }) {
       path: node.frontmatter.path,
       component: blogPostTemplate,
       slug: node.fields.slug,
-      context: {},
+      context: {}
     })
   );
-  
+
   let projectDemoTemplate = path.resolve('src/templates/project-demo.js');
 
   let projects = result.data.projectsRemark.edges.filter(
@@ -93,7 +93,7 @@ async function createPages({ graphql, actions }) {
       slug: node.fields.slug,
       context: {
         featuredImageUrl: node.frontmatter.featuredImageUrl
-      },
+      }
     })
   );
 
@@ -105,13 +105,13 @@ async function createPages({ graphql, actions }) {
       path: `tags/${tag.fieldValue}/`,
       component: tagTemplate,
       context: {
-        tag: tag.fieldValue,
-      },
+        tag: tag.fieldValue
+      }
     })
   );
 }
 
 module.exports = {
   onCreateNode,
-  createPages,
+  createPages
 };

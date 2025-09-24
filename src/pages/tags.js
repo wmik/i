@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -46,15 +46,13 @@ function Tag({ data }) {
   );
 }
 
-function IndexPage({ data }) {
-  let title = 'Tags';
+export default function TagsPage({ data }) {
   let tags = data.allMarkdownRemark.group;
 
   let tagList = tags.map(tag => <Tag data={tag} />);
 
   return (
     <Layout>
-      <SEO title={title} />
       <Content>
         <h1>All tags</h1>
         <TagList>{tagList}</TagList>
@@ -63,7 +61,14 @@ function IndexPage({ data }) {
   );
 }
 
-export const pageQuery = graphql`
+export function Head() {
+  let title = 'Tags';
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
+
+  return <CustomHead title={title} keywords={keywords} />;
+}
+
+export const query = graphql`
   query {
     site {
       siteMetadata {
@@ -71,12 +76,10 @@ export const pageQuery = graphql`
       }
     }
     allMarkdownRemark {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
         totalCount
       }
     }
   }
 `;
-
-export default IndexPage;

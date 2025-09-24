@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import Img from 'gatsby-image';
-import { css } from '@emotion/core';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -64,12 +64,11 @@ function ProjectDemoPreview({ node, image }) {
   );
 }
 
-function IndexPage({ data }) {
-  let title = 'Projects';
+export default function ProjectsPage({ data }) {
   let projects = data.allMarkdownRemark.edges.filter(publishedBeforeToday);
   let previewList = projects.map(({ node }) => {
     let image = data.allFile.edges.find(
-      edge => edge.node.relativePath === node.frontmatter.featuredImageUrl
+      (edge) => edge.node.relativePath === node.frontmatter.featuredImageUrl
     );
 
     return (
@@ -77,8 +76,8 @@ function IndexPage({ data }) {
         node={node}
         key={node.id}
         image={
-          <Img
-            fluid={image.node.childImageSharp.fluid}
+          <GatsbyImage
+            image={getImage(image.node.childImageSharp.gatsbyImageData)}
             style={{ borderRadius: 8, marginBottom: 16 }}
             alt={node.frontmatter.featuredImageAlt}
           />
@@ -89,7 +88,6 @@ function IndexPage({ data }) {
 
   return (
     <Layout>
-      <SEO title={title} />
       <Content>
         <h1>Projects</h1>
         {previewList}
@@ -98,10 +96,11 @@ function IndexPage({ data }) {
   );
 }
 
-function publishedBeforeToday({ node }) {
-  let { rawDate } = node.frontmatter;
-  let publishDate = new Date(rawDate);
-  return publishDate < new Date();
+export function Head() {
+  let title = 'Projects';
+  let keywords = ['wmik', 'personal', 'projects', 'website'];
+
+  return <CustomHead title={title} keywords={keywords} />;
 }
 
 export const query = graphql`
@@ -112,7 +111,7 @@ export const query = graphql`
       }
     }
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { draft: { eq: false }, demo: { eq: true } } }
     ) {
       totalCount
@@ -143,9 +142,7 @@ export const query = graphql`
       edges {
         node {
           childImageSharp {
-            fluid {
-              ...GatsbyImageSharpFluid
-            }
+            gatsbyImageData
           }
           relativePath
         }
@@ -154,4 +151,8 @@ export const query = graphql`
   }
 `;
 
-export default IndexPage;
+function publishedBeforeToday({ node }) {
+  let { rawDate } = node.frontmatter;
+  let publishDate = new Date(rawDate);
+  return publishDate < new Date();
+}

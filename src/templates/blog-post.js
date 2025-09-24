@@ -1,9 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -66,9 +66,9 @@ const Tag = styled.li`
   }
 `;
 
-export default function BlogPost({ data }) {
+export default function BlogPostPage({ data }) {
   let post = data.markdownRemark;
-  let { title, date, description, tags } = post.frontmatter;
+  let { title, date, tags } = post.frontmatter;
 
   let tagComponentList = tags.map(tag => (
     <Tag key={tag}>
@@ -78,7 +78,6 @@ export default function BlogPost({ data }) {
 
   return (
     <Layout>
-      <SEO title={title} description={description || post.excerpt} />
       <Content>
         <MarkedHeader>{title}</MarkedHeader>
         <HeaderDate>
@@ -91,8 +90,15 @@ export default function BlogPost({ data }) {
   );
 }
 
-export const pageQuery = graphql`
-  query($path: String!) {
+export function Head({ data }) {
+  let post = data.markdownRemark;
+  let { title, description, tags } = post.frontmatter;
+
+  return <CustomHead title={title} description={description} keywords={tags} />;
+}
+
+export const query = graphql`
+  query ($path: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       excerpt(pruneLength: 160)

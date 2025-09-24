@@ -60,6 +60,8 @@ Blog posts and Stack Overflow discussions highlighted common developer frustrati
 
 ## Planning & Architecture
 
+![Featured Image 2](../images/use-media-recorder-features-sm.png)
+
 ### Design Philosophy
 The planning phase centered around three core principles that would differentiate this hook from existing solutions:
 
@@ -70,6 +72,8 @@ The planning phase centered around three core principles that would differentiat
 **Progressive Enhancement**: Building a configuration system that works out-of-the-box with sensible defaults while allowing advanced customization for power users. This meant careful API design to avoid overwhelming newcomers while not limiting experienced developers.
 
 ### API Design
+![Featured Image 2](../images/use-media-recorder-code-sm.png)
+
 The hook interface was designed to be intuitive for React developers:
 
 ```javascript
@@ -116,7 +120,7 @@ Following the initial prototype, development proceeded in focused sprints:
 - Community feedback integration and API refinements
 
 ## Release Strategy & Testing
-
+![Featured Image 2](../images/use-media-recorder-package-sm.png)
 ### Version Management
 The project adopted semantic versioning to provide clear expectations for breaking changes:
 
@@ -194,7 +198,7 @@ The minimal budget reflects the project's lean development approach:
 This budget demonstrates that impactful open source projects don't require significant financial investment, but rather focused effort and community engagement.
 
 ## Impact & Future Vision
-
+![Featured Image 2](../images/use-media-recorder-demo-sm.png)
 ### Current Usage
 The hook has found applications in diverse domains:
 

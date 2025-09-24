@@ -6,7 +6,6 @@ module.exports = {
     author: '@wmik_'
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -21,6 +20,7 @@ module.exports = {
         path: `${__dirname}/src/images`
       }
     },
+    'gatsby-plugin-image',
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     'gatsby-plugin-emotion',
@@ -29,6 +29,13 @@ module.exports = {
       options: {
         excerpt_separator: '<!-- end -->',
         plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 1200,
+              wrapperStyle: 'overflow: hidden; border-radius: 8px;'
+            }
+          },
           'gatsby-remark-reading-time',
           {
             resolve: 'gatsby-remark-prismjs',
@@ -48,7 +55,6 @@ module.exports = {
         }, // option to add more headers. 'Link' headers are transformed by the below criteria
         allPageHeaders: [], // option to add headers for all pages. 'Link' headers are transformed by the below criteria
         mergeSecurityHeaders: true, // boolean to turn off the default security headers
-        mergeLinkHeaders: true, // boolean to turn off the default gatsby js headers
         mergeCachingHeaders: true, // boolean to turn off the default caching headers
         transformHeaders: (headers, path) => headers, // optional transform for manipulating headers under each path (e.g.sorting), etc.
         generateMatchPathRewrites: true // boolean to turn off automatic creation of redirect rules for client only paths
@@ -71,6 +77,7 @@ module.exports = {
     // 'gatsby-plugin-offline',
     'gatsby-plugin-theme-ui'
   ],
+  trailingSlash: 'never',
   proxy: {
     prefix: '/audio',
     url: 'https://wmik.s3.amazonaws.com'
