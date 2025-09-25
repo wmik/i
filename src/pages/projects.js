@@ -68,21 +68,27 @@ export default function ProjectsPage({ data }) {
   let projects = data.allMarkdownRemark.edges.filter(publishedBeforeToday);
   let previewList = projects.map(({ node }) => {
     let image = data.allFile.edges.find(
-      (edge) => edge.node.relativePath === node.frontmatter.featuredImageUrl
+      edge => edge.node.relativePath === node.frontmatter.featuredImageUrl
     );
 
+    let imageComponent = null;
+
+    if (
+      image &&
+      image.node.childImageSharp &&
+      image.node.childImageSharp.gatsbyImageData
+    ) {
+      imageComponent = (
+        <GatsbyImage
+          image={getImage(image.node.childImageSharp.gatsbyImageData)}
+          style={{ borderRadius: 8, marginBottom: 16 }}
+          alt={node.frontmatter.featuredImageAlt}
+        />
+      );
+    }
+
     return (
-      <ProjectDemoPreview
-        node={node}
-        key={node.id}
-        image={
-          <GatsbyImage
-            image={getImage(image.node.childImageSharp.gatsbyImageData)}
-            style={{ borderRadius: 8, marginBottom: 16 }}
-            alt={node.frontmatter.featuredImageAlt}
-          />
-        }
-      />
+      <ProjectDemoPreview node={node} key={node.id} image={imageComponent} />
     );
   });
 

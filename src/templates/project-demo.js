@@ -104,7 +104,12 @@ export default function ProjectDemoPage({ data }) {
           <ImagePlaceholder />
         )}
         <MarkedHeader>{title}</MarkedHeader>
-        <DemoLink href={url} children="Live Demo" target="_blank" />
+        <DemoLink
+          href={url}
+          children="Live Demo"
+          target="_blank"
+          rel="noopener noreferrer"
+        />
         <MarkdownContent dangerouslySetInnerHTML={{ __html: project.html }} />
         <TagList>{tagComponentList}</TagList>
       </Content>

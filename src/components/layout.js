@@ -52,7 +52,7 @@ function Layout({ children }) {
   
   return (
     <>
-      <Global styles={getGlobalStyles({ theme })} />;
+      <Global styles={getGlobalStyles({ theme })} />
       <Header />
       <Content>
         <main>{children}</main>
