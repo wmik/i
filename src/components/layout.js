@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { Global, css } from '@emotion/core';
+import { Global, css } from '@emotion/react';
 import { useThemeUI } from 'theme-ui';
 
 import Header from './header';
@@ -47,16 +47,12 @@ const Content = styled.article`
   padding-top: 0;
 `;
 
-function GlobalStyle() {
-  let { theme } = useThemeUI();
-
-  return <Global styles={getGlobalStyles({ theme })} />;
-}
-
 function Layout({ children }) {
+  let { theme } = useThemeUI();
+  
   return (
     <>
-      <GlobalStyle />
+      <Global styles={getGlobalStyles({ theme })} />
       <Header />
       <Content>
         <main>{children}</main>

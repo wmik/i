@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -33,7 +34,15 @@ const ReadingTime = styled.h5`
   color: #606060;
 `;
 
-function BlogPostPreview({ node }) {
+const ImagePlaceholder = styled.div`
+  background-color: rgb(210, 210, 210);
+  border-radius: 8px;
+  height: 320px;
+  width: 100%;
+  margin-bottom: 12px;
+`;
+
+function ProjectDemoPreview({ node, image }) {
   return (
     <div>
       <Link
@@ -43,10 +52,11 @@ function BlogPostPreview({ node }) {
           color: inherit;
         `}
       >
+        {image ? image : <ImagePlaceholder />}
         <MarkerHeader>{node.frontmatter.title} </MarkerHeader>
         <div>
-          <ArticleDate>{node.frontmatter.date}</ArticleDate>
-          <ReadingTime> - {node.fields.readingTime.text}</ReadingTime>
+          <ArticleDate>Scope: {node.frontmatter.duration}</ArticleDate>
+          <ReadingTime> - {node.frontmatter.budget} budget</ReadingTime>
         </div>
         <p>{node.excerpt}</p>
       </Link>
@@ -54,16 +64,38 @@ function BlogPostPreview({ node }) {
   );
 }
 
-export default function BlogPage({ data }) {
-  let posts = data.allMarkdownRemark.edges.filter(publishedBeforeToday);
-  let previewList = posts.map(({ node }) => (
-    <BlogPostPreview node={node} key={node.id} />
-  ));
+export default function ProjectsPage({ data }) {
+  let projects = data.allMarkdownRemark.edges.filter(publishedBeforeToday);
+  let previewList = projects.map(({ node }) => {
+    let image = data.allFile.edges.find(
+      edge => edge.node.relativePath === node.frontmatter.featuredImageUrl
+    );
+
+    let imageComponent = null;
+
+    if (
+      image &&
+      image.node.childImageSharp &&
+      image.node.childImageSharp.gatsbyImageData
+    ) {
+      imageComponent = (
+        <GatsbyImage
+          image={getImage(image.node.childImageSharp.gatsbyImageData)}
+          style={{ borderRadius: 8, marginBottom: 16 }}
+          alt={node.frontmatter.featuredImageAlt}
+        />
+      );
+    }
+
+    return (
+      <ProjectDemoPreview node={node} key={node.id} image={imageComponent} />
+    );
+  });
 
   return (
     <Layout>
       <Content>
-        <h1>Blog</h1>
+        <h1>Projects</h1>
         {previewList}
       </Content>
     </Layout>
@@ -71,12 +103,10 @@ export default function BlogPage({ data }) {
 }
 
 export function Head() {
-  let title = 'Blog';
-  let keywords = ['wmik', 'personal', 'blog', 'website'];
+  let title = 'Projects';
+  let keywords = ['wmik', 'personal', 'projects', 'website'];
 
-  return (
-    <CustomHead title={title} keywords={keywords} />
-  );
+  return <CustomHead title={title} keywords={keywords} />;
 }
 
 export const query = graphql`
@@ -88,7 +118,7 @@ export const query = graphql`
     }
     allMarkdownRemark(
       sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { draft: { eq: false }, demo: { eq: null } } }
+      filter: { frontmatter: { draft: { eq: false }, demo: { eq: true } } }
     ) {
       totalCount
       edges {
@@ -99,6 +129,10 @@ export const query = graphql`
             date(formatString: "DD MMMM, YYYY")
             rawDate: date
             path
+            featuredImageUrl
+            featuredImageAlt
+            duration
+            budget
           }
           fields {
             slug
@@ -107,6 +141,16 @@ export const query = graphql`
             }
           }
           excerpt
+        }
+      }
+    }
+    allFile(filter: { sourceInstanceName: { eq: "images" } }) {
+      edges {
+        node {
+          childImageSharp {
+            gatsbyImageData
+          }
+          relativePath
         }
       }
     }

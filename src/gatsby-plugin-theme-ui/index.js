@@ -1,4 +1,8 @@
-export default {
+const theme = {
+  config: {
+    initialColorModeName: 'light',
+    useLocalStorage: false
+  },
   colors: {
     background: 'hsl(210, 50%, 100%)',
     white: 'hsl(0, 0%, 100%)',
@@ -19,3 +23,5 @@ export default {
     }
   }
 };
+
+export default theme;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -44,7 +44,7 @@ function PostTitle({ node }) {
   );
 }
 
-function IndexPage({ pageContext, data }) {
+export default function TagPage({ pageContext, data }) {
   let { tag } = pageContext;
   let { edges } = data.allMarkdownRemark;
 
@@ -56,7 +56,6 @@ function IndexPage({ pageContext, data }) {
 
   return (
     <Layout>
-      <SEO title={tag} />
       <Content>
         <h1>{tag}</h1>
         <PostTitleList>{postTitleList}</PostTitleList>
@@ -65,16 +64,16 @@ function IndexPage({ pageContext, data }) {
   );
 }
 
-function publishedBeforeToday({ node }) {
-  let { date } = node.frontmatter;
-  let publishDate = new Date(date);
-  return publishDate < new Date();
+export function Head({ pageContext }) {
+  let title = pageContext.tag;
+
+  return <CustomHead title={title} />;
 }
 
-export const pageQuery = graphql`
-  query($tag: String) {
+export const query = graphql`
+  query ($tag: String) {
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { tags: { in: [$tag] } } }
     ) {
       edges {
@@ -91,4 +90,8 @@ export const pageQuery = graphql`
   }
 `;
 
-export default IndexPage;
+function publishedBeforeToday({ node }) {
+  let { date } = node.frontmatter;
+  let publishDate = new Date(date);
+  return publishDate < new Date();
+}

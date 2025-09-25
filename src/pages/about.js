@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
 import { ExternalLink } from '../components/link';
+import { CustomHead } from '../components/head';
 
 const Content = styled.article`
   margin: 0 auto;
@@ -10,12 +10,9 @@ const Content = styled.article`
   padding: 1.45rem 1.0875rem;
 `;
 
-function AboutPage() {
-  let title = 'About';
-
+export default function AboutPage() {
   return (
     <Layout>
-      <SEO title={title} />
       <Content>
         <h1>About</h1>
         <p>Hey there!</p>
@@ -31,4 +28,9 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export function Head() {
+  let title = 'About';
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
+
+  return <CustomHead title={title} keywords={keywords} />;
+}

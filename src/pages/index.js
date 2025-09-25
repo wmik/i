@@ -2,18 +2,19 @@ import React from 'react';
 
 import LandingBio from '../components/landing-bio';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import { CustomHead } from '../components/head';
 
-function IndexPage() {
-  let title = 'Home';
-  let keywords = ['wmik', 'personal', 'blog', 'website'];
-
+export default function IndexPage() {
   return (
     <Layout>
-      <SEO title={title} keywords={keywords} />
       <LandingBio />
     </Layout>
   );
 }
 
-export default IndexPage;
+export function Head() {
+  let title = 'Home';
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
+
+  return <CustomHead title={title} keywords={keywords} />;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Layout from '../components/layout';
@@ -26,9 +27,22 @@ const MarkedHeader = styled.h1`
   ${markStyle}
 `;
 
-const HeaderDate = styled.h3`
+const ImagePlaceholder = styled.div`
+  background-color: rgb(210, 210, 210);
+  border-radius: 8px;
+  height: 320px;
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+const DemoLink = styled.a`
   margin-top: 10px;
   color: #606060;
+  display: block;
+  margin: 16px 0;
+  &:hover {
+    color: rgb(0, 125, 250);
+  }
 `;
 
 // STYLE THE TAGS INSIDE THE MARKDOWN HERE
@@ -66,9 +80,10 @@ const Tag = styled.li`
   }
 `;
 
-export default function BlogPostPage({ data }) {
-  let post = data.markdownRemark;
-  let { title, date, tags } = post.frontmatter;
+export default function ProjectDemoPage({ data }) {
+  let project = data.markdownRemark;
+  let { title, tags, url, featuredImageAlt } = project.frontmatter;
+  let image = data.file;
 
   let tagComponentList = tags.map(tag => (
     <Tag key={tag}>
@@ -79,26 +94,46 @@ export default function BlogPostPage({ data }) {
   return (
     <Layout>
       <Content>
+        {image ? (
+          <GatsbyImage
+            image={getImage(image.childImageSharp.gatsbyImageData)}
+            style={{ borderRadius: 8, marginBottom: 16 }}
+            alt={featuredImageAlt}
+          />
+        ) : (
+          <ImagePlaceholder />
+        )}
         <MarkedHeader>{title}</MarkedHeader>
-        <HeaderDate>
-          {date} - {post.fields.readingTime.text}
-        </HeaderDate>
-        <MarkdownContent dangerouslySetInnerHTML={{ __html: post.html }} />
+        <DemoLink
+          href={url}
+          children="Live Demo"
+          target="_blank"
+          rel="noopener noreferrer"
+        />
+        <MarkdownContent dangerouslySetInnerHTML={{ __html: project.html }} />
         <TagList>{tagComponentList}</TagList>
       </Content>
     </Layout>
   );
 }
 
-export function Head({ data }) {
-  let post = data.markdownRemark;
-  let { title, description, tags } = post.frontmatter;
+export function Head({ data, location }) {
+  let project = data.markdownRemark;
+  let { title, description, tags } = project.frontmatter;
+  let keywords = ['wmik', 'personal', 'blog', 'website'];
 
-  return <CustomHead title={title} description={description} keywords={tags} />;
+  return (
+    <CustomHead
+      description={description || project.excerpt}
+      title={title}
+      keywords={tags ?? keywords}
+      pathname={location.pathname}
+    />
+  );
 }
 
 export const query = graphql`
-  query ($path: String!) {
+  query ($path: String!, $featuredImageUrl: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       excerpt(pruneLength: 160)
@@ -107,11 +142,19 @@ export const query = graphql`
         path
         title
         tags
+        url
+        featuredImageAlt
       }
       fields {
         readingTime {
           text
         }
+      }
+    }
+    file(relativePath: { eq: $featuredImageUrl }) {
+      relativePath
+      childImageSharp {
+        gatsbyImageData
       }
     }
   }

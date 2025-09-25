@@ -16,7 +16,6 @@
 - Nunito font included as npm module
 - Syntax highlighting with prismjs
 - Textmarkerstyle headings inspired by Basecamp
-- Site meta tags with React Helmet
 - Plugins for offline support
 - Draft blog posts not published
 
@@ -26,24 +25,19 @@ Create new pages like an About page in the `/pages` directory.
 The minimum code is:
 
 ```jsx
-import React from "react"
+import React from 'react';
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from '../components/layout';
 
-function PageName () {
-  let title = 'Page title'
-  let keywords = ['page', 'keyword'];
-
+function PageName() {
   return (
     <Layout>
-      <SEO title={title} keywords={keywords} />
       {/* Add more content here */}
     </Layout>
   );
 }
 
-export default PageName
+export default PageName;
 ```
 
 To change the name on the landing page please modify the `title` in `gatsby-config.js`
@@ -52,14 +46,13 @@ The Nunito typeface is included as a npm module in `gatsby-browser.js` and in `/
 
 ## 🚀 Quick start
 
-1. Install project dependencies
+1.  Install project dependencies
 
         npm run install
 
-1. Launch the app
-        
-        npm run start
+1.  Launch the app
 
+        npm run start
 
     Your site is now running at `http://localhost:8000`!
 

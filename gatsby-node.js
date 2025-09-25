@@ -8,7 +8,7 @@ function onCreateNode({ node, getNode, actions }) {
     actions.createNodeField({
       node,
       name: 'slug',
-      value: slug,
+      value: slug
     });
   }
 }
@@ -22,6 +22,27 @@ const QUERY_MARKDOWN = `
             path
             draft
             date
+            demo
+          }
+          fields {
+            slug
+          }
+        }
+      }
+    }
+    projectsRemark: allMarkdownRemark {
+      edges {
+        node {
+          frontmatter {
+            path
+            draft
+            date
+            demo
+            duration
+            budget
+            url
+            featuredImageUrl
+            featuredImageAlt
           }
           fields {
             slug
@@ -30,7 +51,7 @@ const QUERY_MARKDOWN = `
       }
     }
     tagsGroup: allMarkdownRemark {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
       }
     }
@@ -47,7 +68,7 @@ async function createPages({ graphql, actions }) {
   let blogPostTemplate = path.resolve('src/templates/blog-post.js');
 
   let posts = result.data.postsRemark.edges.filter(
-    ({ node }) => !node.frontmatter.draft
+    ({ node }) => !node.frontmatter.draft && !node.frontmatter.demo
   );
 
   posts.forEach(({ node }) =>
@@ -55,7 +76,24 @@ async function createPages({ graphql, actions }) {
       path: node.frontmatter.path,
       component: blogPostTemplate,
       slug: node.fields.slug,
-      context: {},
+      context: {}
+    })
+  );
+
+  let projectDemoTemplate = path.resolve('src/templates/project-demo.js');
+
+  let projects = result.data.projectsRemark.edges.filter(
+    ({ node }) => !node.frontmatter.draft && node.frontmatter.demo
+  );
+
+  projects.forEach(({ node }) =>
+    actions.createPage({
+      path: node.frontmatter.path,
+      component: projectDemoTemplate,
+      slug: node.fields.slug,
+      context: {
+        featuredImageUrl: node.frontmatter.featuredImageUrl
+      }
     })
   );
 
@@ -67,13 +105,13 @@ async function createPages({ graphql, actions }) {
       path: `tags/${tag.fieldValue}/`,
       component: tagTemplate,
       context: {
-        tag: tag.fieldValue,
-      },
+        tag: tag.fieldValue
+      }
     })
   );
 }
 
 module.exports = {
   onCreateNode,
-  createPages,
+  createPages
 };
