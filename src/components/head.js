@@ -57,6 +57,19 @@ export function CustomHead({
 
       {/* Additional meta tags passed as children */}
       {children}
+      <script
+        key="simple-analytics"
+        data-collect-dnt="true"
+        async
+        src="https://scripts.simpleanalyticscdn.com/latest.js"
+      />,
+      <noscript key="simple-analytics-noscript">
+        <img
+          src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true"
+          alt=""
+          referrerpolicy="no-referrer-when-downgrade"
+        />
+      </noscript>
     </>
   );
 }
