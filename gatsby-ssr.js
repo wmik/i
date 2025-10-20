@@ -4,6 +4,8 @@
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
 
+const React = require('react');
+
 exports.onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
     <script
