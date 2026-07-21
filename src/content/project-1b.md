@@ -25,13 +25,36 @@ The system is built on a credit model: free tier gets 5 credits, one generation 
 ## Technical Highlights
 
 - **Multi-Agent AI Pipeline**: Three specialized LLM agents working sequentially — a Strategist that analyzes the brief and selects a copywriting framework (AIDA, PAS, BAB, FAB, or 4Ps), a Copywriter that generates platform-specific ad variants following that framework, and a Reviewer that evaluates and refines the output against quality criteria
+
+    ![Featured Image 1a](../images/continuumads/continuumads-ai-pipeline.png)
+
 - **Multi-Provider Support**: OpenAI GPT-4o, Anthropic Claude Sonnet 4, and Google Gemini 2.5 Pro — users bring their own API keys or use the hosted key
+
+    ![Featured Image 1a](../images/continuumads/continuumads-ai-providers.png)
+
 - **Platform-Specific Ad Generation**: Each of the six platforms gets ad creatives tailored to its formats (feed, story, reel, carousel, video, text) with format-appropriate length and style constraints
+
+    ![Featured Image 1a](../images/continuumads/continuumads-campaign-platform.png)
+
 - **Trigger.dev Background Jobs**: Content generation and image generation run as async tasks with realtime progress tracking via WebSocket hooks
+
+  ![Featured Image 1a](../images/continuumads/background-jobs.png)
+
 - **Inline Ad Editing**: Generated ads are editable in-place — headline, copy, CTA, and image description fields without leaving the campaign view
+
+    ![Featured Image 1a](../images/continuumads/continuumads-ad-editor.png)
+
 - **Multi-Tenant Organizations**: Teams share campaigns, credits, and integrations under an org umbrella with role-based access control
+
+    ![Featured Image 1a](../images/continuumads/continuumads-org-switcher.png)
+
 - **Credit System**: Usage-based billing with auto-refund on failure, subscription tracking, and credit period resets via background jobs
+
+    ![Featured Image 1a](../images/continuumads/continuumads-credits.png)
+
 - **AI Assist Drawer**: Per-field AI suggestions during campaign creation (1 credit per suggestion) that can populate individual fields or entire form steps
+
+    ![Featured Image 1a](../images/continuumads/continuumads-campaign-ai-assist.png)
 
 ## Stack
 
@@ -41,11 +64,14 @@ The system is built on a credit model: free tier gets 5 credits, one generation 
 
 **Background Jobs**: Trigger.dev handles all async computation — content generation, image generation via DALL-E with S3 upload, and scheduled credit resets. The realtime run hooks let the frontend display generation progress without polling.
 
-**Database**: PostgreSQL via Prisma ORM. The `campaigns` table stores everything in a `custom` JSON column — campaign data, generated content, generation run metadata — keeping the schema flat while accommodating the highly variable campaign structure.
-
 **Auth**: better-auth with email/password credential accounts, organization-scoped sessions, and admin user management. Sessions track the active organization and team for multi-tenant data isolation.
 
 **Storage**: AWS S3 for uploaded reference images and generated ad images.
+
+**Database**: PostgreSQL via Prisma ORM. The `campaigns` table stores everything in a `custom` JSON column — campaign data, generated content, generation run metadata — keeping the schema flat while accommodating the highly variable campaign structure.
+
+![Featured Image 1b](../images/continuumads/prisma-schema.svg)
+
 
 ## Research & Discovery
 

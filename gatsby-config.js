@@ -36,6 +36,7 @@ module.exports = {
               wrapperStyle: 'overflow: hidden; border-radius: 8px;'
             }
           },
+          `gatsby-remark-copy-linked-files`,
           'gatsby-remark-reading-time',
           {
             resolve: 'gatsby-remark-prismjs',
